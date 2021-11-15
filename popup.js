@@ -16,7 +16,6 @@ function getTime() {
     .innerHTML;
   let playlistLenght = Number(index.split("/")[1]);
   let currentIndex = Number(index.split("/")[0]) - 1;
-
   const days = [];
   const hours = [];
   const minutes = [];
@@ -27,6 +26,7 @@ function getTime() {
   let totalHours = 0;
   let totalDays = 0;
   let i = currentIndex;
+
   for (i; i < playlistLenght; i++) {
     let currentTimeLenght = list[i].innerText.split(":");
     let currentTime = list[i].innerText.split(":");
@@ -61,9 +61,21 @@ function getTime() {
   });
   // convert to second
   timeSeconds =
-    totalDays * 24 * 3600 + totalHours * 3600 + totalMinutes * 60 + totalSecond;
+    totalDays * 24 * 60 + totalHours * 3600 + totalMinutes * 60 + totalSecond;
+
+  function secondsToDhms(seconds) {
+    seconds = Number(seconds);
+    let h = Math.floor(seconds / 3600);
+    let m = Math.floor((seconds % 3600) / 60);
+    let s = Math.floor(seconds % 60);
+
+    let hDisplay = h > 0 ? h + (h == 1 ? " hour, " : " hours, ") : "";
+    let mDisplay = m > 0 ? m + (m == 1 ? " minute, " : " minutes, ") : "";
+    let sDisplay = s > 0 ? s + (s == 1 ? " second" : " seconds") : "";
+    return hDisplay + mDisplay + sDisplay;
+  }
   // result
-  const result = new Date(timeSeconds * 1000).toISOString().substr(11, 8);
+  const result = secondsToDhms(timeSeconds);
   // display on screen
 
   const info = document.querySelectorAll(
